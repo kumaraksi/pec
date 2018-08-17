@@ -9,6 +9,11 @@ import { 
 
 let chain = {};
 
+/**
+ * Get paginated list of pokemon
+ * limit = 20;
+ * @param {*} url 
+ */
 function getPokemonList(url) {
     showLoader();
     getAllPokemon(url).then((response) => {
@@ -18,25 +23,27 @@ function getPokemonList(url) {
         console.error(err)
     })
 }
+
+/**
+ *Show loader when pokemon list is being called
+ */
 function showLoader(){
     let loader = document.getElementById('loader')
     loader.classList.remove('hidden')
 }
+
+/**
+ *Hide loader on successful completing of API call
+ */
 function hideLoader(){
     let loader = document.getElementById('loader')
     loader.classList.add('hidden')
 }
 
-// function getPokemonList(offset, limit) {
-//     document.getElementById('app').innerHTML = 'Loading'
-//     getAllPokemon(offset, limit).then((response) => {
-//         localStorage.setItem('pokemonListData', JSON.stringify(response))
-//         renderPokemonGrid(response);
-//     }).catch((err) => {
-//         console.error(err)
-//     })
-// }
-
+/**
+ * get information of selected Pokemon
+ * @param {*} id 
+ */
 function getSelectedPokemon(id) {
     // document.getElementById('app').innerHTML = 'Loading'
     id = Number.parseInt(id);
@@ -50,6 +57,12 @@ function getSelectedPokemon(id) {
     })
 }
 
+/**
+ * generic function to render the grid
+ * @param {*} gridData 
+ * @param {*} localStorageKey 
+ * @param {*} repaintGrid 
+ */
 function renderPokemonGrid(gridData,localStorageKey,repaintGrid=false) {
     document.getElementById('app').innerHTML = ''
     localStorageKey = localStorageKey ? localStorageKey : 'pokemonListData'
@@ -68,6 +81,10 @@ function renderPokemonGrid(gridData,localStorageKey,repaintGrid=false) {
     document.getElementById('app').innerHTML += parent;
 }
 
+/**
+ * get the pokemon species in the evolution chain 
+ * @param {*} evolutionChain 
+ */
 function generateEvolutionDiagram(evolutionChain) {
     var len = evolutionChain.evolves_to.length;
     if (len === 0) {
@@ -83,12 +100,19 @@ function generateEvolutionDiagram(evolutionChain) {
     }
 }
 
+/**
+ * Generate evolution chain
+ * @param {*} response 
+ */
 function setEvolutionChainData(response){
     chain = {};
     generateEvolutionDiagram(response.chain);
     return chain;
 }
 
+/**
+ * Export only those functions which need to be made public
+ */
 export const PokemonController = {
     getPokemonList: getPokemonList,
     renderPokemonGrid: renderPokemonGrid,
